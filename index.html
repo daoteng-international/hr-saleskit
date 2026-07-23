@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LinkUp · AI 智慧差勤薪資雲 — 產品與方案</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%231f4e79'/%3E%3Cg fill='none' stroke-width='3.6' stroke-linecap='round'%3E%3Crect x='9' y='18' width='20' height='12' rx='6' transform='rotate(-30 24 24)' stroke='%23fff'/%3E%3Crect x='19' y='18' width='20' height='12' rx='6' transform='rotate(-30 24 24)' stroke='%23eaa640'/%3E%3C/g%3E%3C/svg%3E">
+<meta name="description" content="LinkUp — 為台灣企業打造的多租戶 AI 智慧人資系統。12 大模組涵蓋差勤打卡、彈性規則引擎、自動薪資、台灣稅務申報、AI 出勤分析、績效考核與招募 ATS。含各模組特色與模組價目。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fbfbfd; --bg-alt:#ffffff; --bg-tint:#f3f6fb;
+    --ink:#1d1d1f; --gray:#6e6e73; --gray2:#86868b; --line:rgba(0,0,0,.09);
+    --brand:#1f4e79; --brand-soft:#2d6aa3; --brand-deep:#153a5c;
+    --gold:#eaa640; --gold-deep:#b26a00;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang TC","Segoe UI","Noto Sans TC",sans-serif;
+    --serif:"Noto Serif TC",serif;
+    --ease:cubic-bezier(.16,1,.3,1);
+    --maxw:940px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-snap-type:y mandatory;scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+  body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- progress + header ---------- */
+  .progress{position:fixed;inset:0 0 auto 0;height:2px;z-index:80;background:transparent;pointer-events:none;}
+  .progress i{display:block;height:100%;width:0;background:var(--brand);transition:width .5s var(--ease);}
+  @media(max-width:640px){.progress{height:4px;}}
+  .topbar{position:fixed;inset:0 0 auto 0;z-index:70;display:flex;align-items:center;justify-content:space-between;
+    padding:13px clamp(18px,4vw,44px);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+    background:rgba(251,251,253,.72);border-bottom:1px solid rgba(0,0,0,.06);}
+  .topbar .brand{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:700;letter-spacing:.01em;}
+  .topbar .brand svg{height:26px;width:26px;display:block;}
+  .topbar .brand b{font-weight:700;}
+  .topbar .brand span{color:var(--gray);font-weight:500;font-size:13px;}
+  .topbar .links{display:flex;gap:18px;font-size:13.5px;font-weight:600;color:var(--gray);}
+  .topbar .links a{transition:color .2s;}
+  .topbar .links a:hover{color:var(--brand);}
+  @media(max-width:640px){.topbar .links{display:none;}}
+
+  /* ---------- dot nav ---------- */
+  .nav{position:fixed;top:50%;right:max(14px,2vw);transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:11px;align-items:flex-end;}
+  .nav button{position:relative;display:flex;align-items:center;cursor:pointer;background:none;border:0;padding:3px 0 3px 8px;}
+  .nav button::after{content:"";width:8px;height:8px;border-radius:999px;border:1.5px solid rgba(0,0,0,.28);background:transparent;
+    transition:transform .35s var(--ease),background .35s,border-color .35s;}
+  .nav button[data-active="true"]::after{background:var(--brand);border-color:var(--brand);transform:scale(1.55);}
+  .nav .lbl{margin-right:11px;font-size:12px;font-weight:500;color:var(--ink);background:rgba(255,255,255,.86);backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);border:1px solid rgba(0,0,0,.06);border-radius:999px;padding:3px 11px;white-space:nowrap;
+    opacity:0;transform:translateX(6px);transition:opacity .25s,transform .25s;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.06);}
+  .nav button:hover .lbl,.nav button:focus-visible .lbl{opacity:1;transform:none;}
+  @media(max-width:820px){.nav{display:none;}}
+
+  /* ---------- slides ---------- */
+  .slide{min-height:100svh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;text-align:center;padding:104px clamp(22px,5vw,40px) 84px;position:relative;}
+  .slide.alt{background:var(--bg-alt);}
+  .slide.tint{background:var(--bg-tint);}
+  .inner{width:100%;max-width:var(--maxw);}
+  .wide{max-width:1120px;}
+
+  .eyebrow{font-size:clamp(14px,1.7vw,17px);font-weight:600;color:var(--brand);letter-spacing:.01em;margin-bottom:18px;}
+  .eyebrow.gold{color:var(--gold-deep);}
+  h1{font-size:clamp(38px,7vw,84px);font-weight:700;letter-spacing:-.03em;line-height:1.04;}
+  h2{font-size:clamp(30px,4.8vw,58px);font-weight:700;letter-spacing:-.025em;line-height:1.08;}
+  .lead{font-size:clamp(17px,2.3vw,23px);font-weight:400;color:var(--gray);line-height:1.55;max-width:760px;margin:22px auto 0;letter-spacing:.005em;}
+  .fine{font-size:13.5px;color:var(--gray2);margin-top:14px;letter-spacing:.02em;}
+  .stat{font-size:clamp(84px,17vw,208px);font-weight:700;letter-spacing:-.04em;line-height:.9;color:var(--gold-deep);}
+  .stat.brand{color:var(--brand);}
+  .stat-cap{font-size:clamp(16px,2vw,20px);color:var(--gray);margin-top:6px;}
+
+  .cta{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:#fff;font-size:16px;font-weight:600;
+    padding:13px 26px;border-radius:980px;transition:transform .25s var(--ease),background .25s,box-shadow .25s;margin-top:8px;}
+  .cta:hover{transform:scale(1.035);background:var(--brand-soft);box-shadow:0 12px 28px rgba(31,78,121,.28);}
+  .cta.ghost{background:transparent;color:var(--brand);border:1px solid rgba(31,78,121,.35);}
+  .cta.ghost:hover{background:rgba(31,78,121,.06);box-shadow:none;}
+  .linkrow{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:34px;}
+
+  .scrollhint{position:absolute;bottom:32px;left:0;right:0;margin:0 auto;width:max-content;color:var(--gray2);font-size:12px;letter-spacing:.14em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:7px;}
+  .scrollhint .chev{width:16px;height:16px;border-right:1.6px solid var(--gray2);border-bottom:1.6px solid var(--gray2);transform:rotate(45deg);animation:bob 1.8s var(--ease) infinite;}
+  @keyframes bob{0%,100%{transform:rotate(45deg) translate(0,0);opacity:.85}50%{transform:rotate(45deg) translate(3px,3px);opacity:.35}}
+
+  /* pain / feature grid */
+  .grid{display:grid;gap:clamp(16px,2.4vw,26px);margin-top:44px;text-align:left;}
+  .g4{grid-template-columns:repeat(4,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  @media(max-width:820px){.g4,.g3{grid-template-columns:1fr 1fr;}.g2{grid-template-columns:1fr;}}
+  @media(max-width:520px){.g4,.g3{grid-template-columns:1fr;}}
+  .cell .k{font-size:clamp(16px,2vw,19px);font-weight:600;color:var(--ink);margin-bottom:7px;}
+  .cell .d{font-size:14px;color:var(--gray);line-height:1.6;}
+  .cell .num{font-size:15px;font-weight:700;color:var(--brand);margin-bottom:12px;}
+
+  /* module cards */
+  .mods{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:38px;text-align:left;}
+  @media(max-width:820px){.mods{grid-template-columns:1fr 1fr;}}
+  @media(max-width:520px){.mods{grid-template-columns:1fr;}}
+  .mod{background:#fff;border:1px solid var(--line);border-radius:15px;padding:15px 16px;box-shadow:0 2px 12px rgba(0,0,0,.03);display:flex;gap:12px;align-items:flex-start;transition:transform .3s var(--ease),box-shadow .3s;}
+  .mod:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(31,78,121,.1);}
+  .mod .ic{flex:none;width:36px;height:36px;border-radius:10px;background:rgba(31,78,121,.08);color:var(--brand);display:flex;align-items:center;justify-content:center;}
+  .mod .ic svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+  .mod .t{font-size:14.5px;font-weight:700;margin-bottom:3px;letter-spacing:.01em;}
+  .mod .st{color:var(--gold-deep);font-size:10.5px;font-weight:700;margin-left:5px;letter-spacing:.02em;}
+  .mod .dsc{font-size:12.2px;color:var(--gray);line-height:1.5;}
+  .mod.star{border-color:rgba(178,106,0,.28);background:linear-gradient(180deg,rgba(234,166,64,.05),#fff);}
+  .mod.star .ic{background:rgba(178,106,0,.12);color:var(--gold-deep);}
+
+  /* pipeline flow */
+  .flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:9px;margin-top:44px;}
+  .flow .fstep{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 16px;font-size:14.5px;font-weight:600;box-shadow:0 2px 10px rgba(0,0,0,.03);}
+  .flow .fstep.on{background:var(--brand);color:#fff;border-color:var(--brand);}
+  .flow .arr{color:var(--brand);font-weight:700;font-size:15px;opacity:.55;}
+  @media(max-width:520px){.flow .fstep{font-size:12.5px;padding:8px 11px;}}
+
+  /* feature cards (duo / trio) */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,32px);margin-top:40px;text-align:left;}
+  .duo.trio{grid-template-columns:repeat(3,1fr);}
+  @media(max-width:820px){.duo,.duo.trio{grid-template-columns:1fr;gap:20px;}}
+  .duo .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 22px;box-shadow:0 6px 22px rgba(0,0,0,.04);}
+  .duo .card.hero{border-color:rgba(178,106,0,.32);box-shadow:0 16px 40px rgba(178,106,0,.12);}
+  .duo .card h3{font-size:18px;font-weight:700;color:var(--brand);margin-bottom:5px;}
+  .duo .card h3 .s{color:var(--gold-deep);font-size:12px;font-weight:700;margin-left:6px;}
+  .duo .card .sub{font-size:12.5px;color:var(--gray2);margin-bottom:14px;}
+  .duo .card ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .duo .card li{font-size:14px;color:var(--ink);padding-left:21px;position:relative;line-height:1.5;}
+  .duo .card li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:999px;background:var(--brand);}
+  .duo.trio .card li{font-size:13.3px;}
+  .duo .card.hero li::before{background:var(--gold-deep);}
+  .duo .card .lead-sm{font-size:13px;color:var(--gray);margin-top:15px;line-height:1.55;border-top:1px dashed var(--line);padding-top:13px;}
+
+  /* tree (feature detail) */
+  .tree{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:38px;text-align:left;}
+  @media(max-width:960px){.tree{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.tree{grid-template-columns:1fr;gap:10px;}}
+  .tnode{background:#fff;border:1px solid rgba(31,78,121,.16);border-radius:14px;padding:15px 16px;box-shadow:0 2px 10px rgba(0,0,0,.03);}
+  .tnode h3{font-size:14.5px;font-weight:700;margin-bottom:9px;letter-spacing:.01em;color:var(--brand);}
+  .tnode ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+  .tnode li{font-size:12.6px;color:var(--gray);line-height:1.5;padding-left:13px;position:relative;}
+  .tnode li::before{content:"";position:absolute;left:1px;top:.66em;width:6px;height:1.5px;background:var(--brand);opacity:.55;}
+
+  /* badges */
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;border-radius:999px;padding:2px 9px;vertical-align:middle;margin-left:8px;letter-spacing:.02em;}
+  .badge.live{background:rgba(31,78,121,.1);color:var(--brand);}
+  .badge.soon{background:rgba(178,106,0,.12);color:var(--gold-deep);}
+
+  /* price list */
+  .qlist{margin-top:32px;text-align:left;max-width:740px;margin-left:auto;margin-right:auto;}
+  .qgrp{font-size:12px;font-weight:700;color:var(--gold-deep);letter-spacing:.06em;margin:20px 0 3px;text-transform:uppercase;}
+  .qgrp:first-child{margin-top:0;}
+  .qrow{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:10px 0;border-bottom:1px solid var(--line);}
+  .qrow .l{font-size:15px;font-weight:600;}
+  .qrow .l small{display:block;font-size:12px;color:var(--gray2);font-weight:400;margin-top:2px;line-height:1.4;}
+  .qrow .l .s{color:var(--gold-deep);font-weight:700;font-size:11px;margin-left:5px;}
+  .qrow .v{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink);}
+  .qtotal{display:flex;justify-content:space-between;align-items:baseline;margin-top:20px;padding-top:16px;border-top:2px solid rgba(0,0,0,.12);}
+  .qtotal .l{font-size:16px;font-weight:600;}
+  .qtotal .v{font-size:clamp(26px,3.4vw,36px);font-weight:700;color:var(--gold-deep);letter-spacing:-.02em;font-variant-numeric:tabular-nums;}
+  .qsub{font-size:13.5px;color:var(--gray);margin-top:18px;line-height:1.6;max-width:740px;margin-left:auto;margin-right:auto;}
+  .qsub b{color:var(--ink);font-weight:600;}
+
+  /* tiers */
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;text-align:left;}
+  @media(max-width:820px){.tiers{grid-template-columns:1fr;max-width:460px;margin-left:auto;margin-right:auto;}}
+  .tier{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 20px;display:flex;flex-direction:column;box-shadow:0 4px 18px rgba(0,0,0,.04);}
+  .tier.feat{border-color:var(--brand);box-shadow:0 18px 46px rgba(31,78,121,.18);position:relative;}
+  .tier .tag{position:absolute;top:-12px;left:20px;background:var(--brand);color:#fff;font-size:11.5px;font-weight:700;border-radius:999px;padding:3px 12px;letter-spacing:.02em;}
+  .tier .nm{font-size:16.5px;font-weight:700;}
+  .tier .nm small{display:block;font-size:12px;color:var(--gray);font-weight:500;margin-top:3px;}
+  .tier .pr{font-size:32px;font-weight:700;color:var(--gold-deep);margin:13px 0 2px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;}
+  .tier .pr small{font-size:13px;color:var(--gray);font-weight:500;letter-spacing:0;}
+  .tier .save{font-size:12.5px;color:var(--brand);font-weight:600;min-height:16px;}
+  .tier ul{list-style:none;margin-top:15px;display:flex;flex-direction:column;gap:8px;}
+  .tier li{font-size:13px;color:var(--ink);padding-left:21px;position:relative;line-height:1.45;}
+  .tier li::before{content:"✓";position:absolute;left:0;color:var(--brand);font-weight:700;}
+  .tier li.hl{color:var(--gold-deep);font-weight:600;}
+  .tier li.hl::before{content:"★";color:var(--gold-deep);}
+
+  /* timeline */
+  .tl{display:flex;flex-direction:column;gap:2px;margin-top:40px;text-align:left;max-width:720px;margin-left:auto;margin-right:auto;}
+  .tl .step{display:grid;grid-template-columns:130px 1fr;gap:20px;padding:15px 0;border-bottom:1px solid var(--line);align-items:baseline;}
+  @media(max-width:520px){.tl .step{grid-template-columns:100px 1fr;gap:12px;}}
+  .tl .when{font-size:15px;font-weight:600;color:var(--gray);}
+  .tl .what{font-size:15.5px;color:var(--ink);}
+  .tl .step.mile .when{color:var(--brand);}
+  .tl .step.mile{background:rgba(31,78,121,.05);border-radius:12px;padding:15px 16px;border-bottom-color:transparent;margin:3px 0;}
+  .tl .step.mile .what b{color:var(--brand);}
+  .tl .tg{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--brand);border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:middle;}
+
+  /* compare table */
+  .cmp{margin-top:38px;text-align:left;max-width:800px;margin-left:auto;margin-right:auto;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;}
+  .cmp .row{display:grid;grid-template-columns:1.3fr 1.1fr 1fr;align-items:center;}
+  .cmp .row+.row{border-top:1px solid var(--line);}
+  .cmp .row>div{padding:12px 15px;font-size:13.8px;}
+  .cmp .row .h{font-weight:700;font-size:13.5px;}
+  .cmp .head{background:var(--bg-tint);}
+  .cmp .head .us{color:var(--brand);font-weight:700;}
+  .cmp .head .them{color:var(--gray);font-weight:600;}
+  .cmp .us{color:var(--ink);font-weight:600;}
+  .cmp .them{color:var(--gray2);}
+  .cmp .lab{color:var(--ink);font-weight:600;}
+  @media(max-width:560px){.cmp .row>div{padding:9px 10px;font-size:12px;}}
+
+  /* contact */
+  .contact{display:flex;flex-wrap:wrap;gap:8px 26px;justify-content:center;margin-top:24px;font-size:14px;color:var(--gray);}
+  .contact b{color:var(--ink);font-weight:600;}
+  .credbox{display:inline-flex;flex-wrap:wrap;gap:6px 18px;justify-content:center;align-items:center;margin-top:18px;font-size:13.5px;background:rgba(31,78,121,.06);border:1px solid rgba(31,78,121,.14);border-radius:12px;padding:11px 18px;color:var(--brand-deep);}
+  .credbox b{font-weight:700;}
+  .credbox code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px;}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform .9s var(--ease);}
+  .reveal.in{opacity:1;transform:none;}
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-snap-type:none;scroll-behavior:auto;}
+    .reveal{opacity:1;transform:none;transition:none;}
+    .scrollhint .chev{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress"><i id="pfill"></i></div>
+
+<header class="topbar">
+  <a class="brand" href="#s1">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#1f4e79"/><g fill="none" stroke-width="3.6" stroke-linecap="round"><rect x="9" y="18" width="20" height="12" rx="6" transform="rotate(-30 24 24)" stroke="#fff"/><rect x="19" y="18" width="20" height="12" rx="6" transform="rotate(-30 24 24)" stroke="#eaa640"/></g></svg>
+    <b>LinkUp</b><span>AI 智慧差勤薪資雲</span>
+  </a>
+  <nav class="links">
+    <a href="https://hr-theta-peach.vercel.app/login" target="_blank" rel="noopener">員工自助預覽</a>
+    <a href="https://hr-theta-peach.vercel.app/admin" target="_blank" rel="noopener">管理後台預覽</a>
+  </nav>
+</header>
+
+<nav class="nav" id="dots" aria-label="投影片導覽"></nav>
+
+<!-- 1 COVER -->
+<section class="slide" id="s1" data-label="封面">
+  <div class="inner">
+    <svg class="reveal" viewBox="0 0 48 48" width="94" height="94" style="margin:0 auto 30px;display:block" aria-label="LinkUp">
+      <rect width="48" height="48" rx="12" fill="#1f4e79"/>
+      <g fill="none" stroke-width="3.6" stroke-linecap="round">
+        <rect x="9" y="18" width="20" height="12" rx="6" transform="rotate(-30 24 24)" stroke="#fff"/>
+        <rect x="19" y="18" width="20" height="12" rx="6" transform="rotate(-30 24 24)" stroke="#eaa640"/>
+      </g>
+    </svg>
+    <div class="eyebrow reveal" style="transition-delay:.05s">LinkUp · AI 智慧差勤薪資雲　·　2026</div>
+    <h1 class="reveal" style="transition-delay:.1s">打卡、算薪、報稅，<br>一套 AI 全自動。</h1>
+    <p class="lead reveal" style="transition-delay:.14s">LinkUp 是為台灣企業打造的多租戶智慧人資系統 —<br>從差勤打卡、彈性規則、自動薪資到台灣稅務申報一條龍，<br>並用 AI 省下人資每月數十小時的重複作業。</p>
+    <p class="fine reveal" style="transition-delay:.2s">12 大功能模組　·　通過 256 項自動化測試　·　示範環境已上線可即時操作</p>
+  </div>
+  <div class="scrollhint reveal" style="transition-delay:.3s">Scroll<span class="chev"></span></div>
+</section>
+
+<!-- 2 WHY -->
+<section class="slide alt" id="s2" data-label="為什麼">
+  <div class="inner">
+    <div class="eyebrow reveal">現況</div>
+    <h2 class="reveal" style="transition-delay:.05s">好的團隊，<br>不該把時間耗在算考勤。</h2>
+    <p class="lead reveal" style="transition-delay:.12s">多數企業仍用 Excel、紙本與通訊軟體管理差勤：規則算不清、月底結算與報稅加班到深夜、資料散在多個系統、員工申請靠訊息轉傳 — 錯誤與勞資爭議不斷。</p>
+  </div>
+</section>
+
+<!-- 3 PAIN POINTS -->
+<section class="slide" id="s3" data-label="四大痛點">
+  <div class="inner wide">
+    <div class="eyebrow reveal">四個要解決的問題</div>
+    <h2 class="reveal" style="transition-delay:.05s">從這裡開始。</h2>
+    <div class="grid g4 reveal" style="transition-delay:.12s">
+      <div class="cell"><div class="k">結算耗時</div><div class="d">每月人資花 20–40 小時彙整打卡、算加班與請假，人工作業易錯難查。</div></div>
+      <div class="cell"><div class="k">規則算不清</div><div class="d">全勤階梯、夜班／例假加班倍率、特休遞延、二代健保 — 每家不同，Excel 公式難維護。</div></div>
+      <div class="cell"><div class="k">系統各自為政</div><div class="d">打卡機、請假表單、薪資與扣繳軟體不互通，資料重複輸入、月底對不起來。</div></div>
+      <div class="cell"><div class="k">員工體驗差</div><div class="d">查特休餘額、補打卡、看薪資單都要問人資，一來一往人人費時。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 SOLUTION -->
+<section class="slide tint" id="s4" data-label="解決方案">
+  <div class="inner wide">
+    <div class="eyebrow reveal">解決方案</div>
+    <h2 class="reveal" style="transition-delay:.05s">一套 LinkUp，<br>打通打卡到報稅。</h2>
+    <div class="flow reveal" style="transition-delay:.12s">
+      <span class="fstep on">員工打卡</span><span class="arr">→</span>
+      <span class="fstep">自動結算工時</span><span class="arr">→</span>
+      <span class="fstep">套用規則引擎</span><span class="arr">→</span>
+      <span class="fstep">產生薪資單</span><span class="arr">→</span>
+      <span class="fstep">算稅與扣繳</span><span class="arr">→</span>
+      <span class="fstep">出報表</span>
+    </div>
+    <p class="lead reveal" style="transition-delay:.2s">員工手機打卡與申請、主管線上簽核、系統自動算工時、薪資、二代健保與扣繳，AI 主動揪異常並產報表 — 人資只需覆核，不再從零計算。</p>
+    <p class="qsub reveal" style="transition-delay:.26s;text-align:center">全系統通過 <b>256 項自動化測試</b>；租戶資料隔離、防代打、簽核狀態機、規則引擎與薪資結算皆有專屬測試覆蓋。</p>
+  </div>
+</section>
+
+<!-- 5 MODULE OVERVIEW -->
+<section class="slide alt" id="s5" data-label="模組總覽">
+  <div class="inner wide">
+    <div class="eyebrow reveal">完整模組</div>
+    <h2 class="reveal" style="transition-delay:.05s">十二大模組，<br>覆蓋人資全流程。</h2>
+    <div class="mods reveal" style="transition-delay:.12s">
+      <div class="mod"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div><div class="t">智慧差勤打卡</div><div class="dsc">GPS／網頁／LINE 三種打卡，防代打、缺卡補登。</div></div></div>
+      <div class="mod"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div><div><div class="t">排班與班表管理</div><div class="dsc">班別輪班、整月 CSV 匯入，員工手機確認班表。</div></div></div>
+      <div class="mod"><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><div class="t">假勤多關簽核</div><div class="dsc">請假／加班／補卡／出差，多關簽核引擎、附件。</div></div></div>
+      <div class="mod star"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></div><div><div class="t">彈性規則引擎<span class="st">★ 核心</span></div><div class="dsc">全勤／加班／夜班／計薪後台可調，改規則不改程式。</div></div></div>
+      <div class="mod"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h4a1.5 1.5 0 0 1 0 3h-3a1.5 1.5 0 0 0 0 3h4"/></svg></div><div><div class="t">自動薪資結算</div><div class="dsc">打卡＋規則自動產出逐項可稽核薪資單，一鍵月結。</div></div></div>
+      <div class="mod star"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></div><div><div class="t">台灣稅務申報<span class="st">★ 核心</span></div><div class="dsc">二代健保、薪資扣繳、健保眷屬內建，費率一改就更新。</div></div></div>
+      <div class="mod star"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.2"/></svg></div><div><div class="t">AI 出勤分析<span class="st">★ 核心</span></div><div class="dsc">AI 生月報、用講的問人事數據，無金鑰也能 demo。</div></div></div>
+      <div class="mod"><div class="ic"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div><div><div class="t">自動偵測與提醒</div><div class="dsc">忘打卡／異常／遲到自動抓，站內＋Email＋LINE 通知。</div></div></div>
+      <div class="mod"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div><div><div class="t">報表與人力儀表板</div><div class="dsc">四大報表 Excel 匯出、在職人數與異動分析。</div></div></div>
+      <div class="mod"><div class="ic"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg></div><div><div class="t">人事主檔與 ESS</div><div class="dsc">員工履歷、組織圖、到職報到與手機自助一站管。</div></div></div>
+      <div class="mod"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5L12 3z"/></svg></div><div><div class="t">績效考核 KPI</div><div class="dsc">加權考核範本，指派→評分→定版全線上。</div></div></div>
+      <div class="mod"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg></div><div><div class="t">招募 ATS</div><div class="dsc">職缺、人才庫、面試、offer 到內部職缺牆一條龍。</div></div></div>
+    </div>
+    <p class="qsub reveal" style="transition-delay:.2s;text-align:center">另含<b>基礎平台</b>（多租戶帳號・角色權限・白標品牌・模組開關）與選配<b>原生 App</b>（人臉打卡・推播・離線打卡）。</p>
+  </div>
+</section>
+
+<!-- 6 ATTENDANCE CORE DETAIL -->
+<section class="slide" id="s6" data-label="差勤核心">
+  <div class="inner wide">
+    <div class="eyebrow reveal">模組特色 · 差勤核心</div>
+    <h2 class="reveal" style="transition-delay:.05s">從打卡到簽核，<br>員工自己就能搞定。</h2>
+    <div class="tree reveal" style="transition-delay:.12s">
+      <div class="tnode"><h3>智慧差勤打卡</h3><ul><li>GPS／網頁／LINE 三種打卡</li><li>防代打：打卡身分取自登入憑證</li><li>智慧推斷上下班、休息外出配對</li><li>缺卡偵測、單筆或 CSV 批次補登</li></ul></div>
+      <div class="tnode"><h3>排班與班表</h3><ul><li>班別主檔（工時／休息）</li><li>整月排班 CSV 批次匯入</li><li>員工手機確認或提出異議</li><li>與工時結算連動</li></ul></div>
+      <div class="tnode"><h3>假勤多關簽核</h3><ul><li>請假／加班／補卡／出差一套流程</li><li>多關有序簽核鏈（狀態機）</li><li>批次核准、改派、催辦、自撤</li><li>核准即回寫假別餘額</li></ul></div>
+      <div class="tnode"><h3>人事主檔與 ESS</h3><ul><li>員工履歷／學經歷／證照自助維護</li><li>公司組織圖、到職報到管理</li><li>手機打卡、查勤查假、看薪資單</li><li>可加到主畫面（PWA）</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 THREE CORE ENGINES (crown jewels) -->
+<section class="slide alt" id="s7" data-label="三大核心引擎">
+  <div class="inner wide">
+    <div class="eyebrow gold reveal">核心引擎 · 最大差異</div>
+    <h2 class="reveal" style="transition-delay:.05s">把公司的規矩與法規，<br>變成系統的邏輯。</h2>
+    <div class="duo trio reveal" style="transition-delay:.12s">
+      <div class="card hero">
+        <h3>彈性規則引擎<span class="s">★</span></h3>
+        <div class="sub">一家公司一種算法，不用改程式</div>
+        <ul>
+          <li>全勤獎金＋遲到階梯扣款</li>
+          <li>平日／例假／國定假加班倍率，可轉補休</li>
+          <li>夜間加給時段（正確處理跨午夜）</li>
+          <li>月薪／按日計薪，規則版本化可稽核</li>
+        </ul>
+        <div class="lead-sm">別家改規則要工程師、要排版本；LinkUp 改一個設定就生效。</div>
+      </div>
+      <div class="card hero">
+        <h3>自動薪資結算</h3>
+        <div class="sub">打卡＋規則＝可稽核薪資單</div>
+        <ul>
+          <li>工時自動結算（工時／遲到／加班／夜間）</li>
+          <li>月度薪資一鍵跑，逐項加總必等應發</li>
+          <li>本俸＋加班費＋夜間＋全勤逐條可回溯</li>
+          <li>薪資單定版鎖定，重算另產新版</li>
+        </ul>
+        <div class="lead-sm">每筆金額都回溯得到規則與打卡 — 對帳、稽核、勞檢都站得住。</div>
+      </div>
+      <div class="card hero">
+        <h3>台灣稅務申報<span class="s">★</span></h3>
+        <div class="sub">台灣法規內建，逐年費率可調</div>
+        <ul>
+          <li>二代健保補充保費（獎金逾投保 4 倍等）</li>
+          <li>薪資所得扣繳、非居住者扣繳</li>
+          <li>健保費本人＋眷屬（眷口封頂）</li>
+          <li>扣繳／補充保費明細 CSV 申報匯出</li>
+        </ul>
+        <div class="lead-sm">法定費率門檻全參數化，年度一改就更新，不必等軟體商改版。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 AI + AUTO DETECTION -->
+<section class="slide" id="s8" data-label="AI 與自動化">
+  <div class="inner wide">
+    <div class="eyebrow gold reveal">AI 與自動化 · 這是我們贏的地方</div>
+    <h2 class="reveal" style="transition-delay:.05s">AI 不只是噱頭，<br>它替人資省時間。</h2>
+    <div class="duo reveal" style="transition-delay:.12s">
+      <div class="card">
+        <h3>AI 出勤分析與問答<span class="s">★</span></h3>
+        <ul>
+          <li><b>AI 月報摘要</b>：一鍵生繁中月報，橫跨出勤／請假／薪資／人力／異常<span class="badge soon">接 AI 金鑰</span></li>
+          <li><b>自然語言問答</b>：用講的問「這個月誰加班最多？」，AI 直接答<span class="badge soon">接 AI 金鑰</span></li>
+          <li>員工問答嚴格限縮只讀本人資料，不外洩他人</li>
+          <li><b>無金鑰也能 demo</b>：自動退回規則型摘要，展示不開天窗</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>自動偵測與多通道提醒</h3>
+        <ul>
+          <li><b>忘打卡偵測</b>：排班對打卡，缺卡自動標記提醒<span class="badge live">已內建</span></li>
+          <li><b>異常預警</b>：連續遲到、頻繁缺卡、單月加班逾 46 小時<span class="badge live">已內建</span></li>
+          <li>遲到統計與近月趨勢，月底不再手工加總</li>
+          <li>站內通知＋Email＋LINE 推播，每日排程自動跑</li>
+        </ul>
+      </div>
+    </div>
+    <p class="qsub reveal" style="transition-delay:.2s;text-align:center"><b>純規則類即開即用</b>；生成式摘要與問答接上 AI 金鑰即啟用。競品多半只有打卡 — AI 是 LinkUp 的護城河。</p>
+  </div>
+</section>
+
+<!-- 9 BREADTH: reports / kpi / ats -->
+<section class="slide tint" id="s9" data-label="管理廣度">
+  <div class="inner wide">
+    <div class="eyebrow reveal">整套 HR 都在這</div>
+    <h2 class="reveal" style="transition-delay:.05s">不只差勤，<br>是完整人資平台。</h2>
+    <div class="duo trio reveal" style="transition-delay:.12s">
+      <div class="card">
+        <h3>報表與儀表板</h3>
+        <ul>
+          <li>出勤／薪資／請假／人力四大報表</li>
+          <li>UTF-8 匯出，Excel 開中文不亂碼</li>
+          <li>在職人數逐月分析（期初／新進／離職）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>績效考核 KPI</h3>
+        <ul>
+          <li>加權考核範本自訂題項與權重</li>
+          <li>指派→評分→提交→定版狀態機</li>
+          <li>自動加權計分，取代 Excel 考核表</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>招募 ATS</h3>
+        <ul>
+          <li>職缺需求單、人才庫 pipeline</li>
+          <li>面試紀錄與行事曆、offer 狀態流</li>
+          <li>內部職缺牆同步開放員工投遞</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 MODULE PRICING -->
+<section class="slide alt" id="s10" data-label="模組價目">
+  <div class="inner">
+    <div class="eyebrow gold reveal">模組價目</div>
+    <h2 class="reveal" style="transition-delay:.05s">透明計價，<br>要哪些買哪些。</h2>
+    <div class="qlist reveal" style="transition-delay:.12s">
+      <div class="qgrp">基礎</div>
+      <div class="qrow"><div class="l">基礎平台 <small>多租戶・角色權限・白標・模組開關・部署上線・教育訓練</small></div><div class="v">NT$60,000</div></div>
+      <div class="qgrp">差勤核心</div>
+      <div class="qrow"><div class="l">智慧差勤打卡 <small>GPS／網頁／LINE・防代打・補卡</small></div><div class="v">NT$48,000</div></div>
+      <div class="qrow"><div class="l">排班與班表管理 <small>班別・輪班・CSV 匯入・員工確認</small></div><div class="v">NT$30,000</div></div>
+      <div class="qrow"><div class="l">假勤申請與多關簽核 <small>請假／加班／補卡／出差・簽核引擎・假別餘額</small></div><div class="v">NT$45,000</div></div>
+      <div class="qgrp">核心引擎<span class="s">★ 差異化</span></div>
+      <div class="qrow"><div class="l">彈性差勤規則引擎 <span class="s">★</span><small>工時結算・特殊制度 DSL・免改程式</small></div><div class="v">NT$60,000</div></div>
+      <div class="qrow"><div class="l">自動薪資結算 <small>薪資單・工時結算・逐項可稽核・定版</small></div><div class="v">NT$52,000</div></div>
+      <div class="qrow"><div class="l">台灣薪資稅務申報 <span class="s">★</span><small>二代健保・扣繳・眷屬・申報匯出</small></div><div class="v">NT$45,000</div></div>
+      <div class="qgrp">智慧・分析</div>
+      <div class="qrow"><div class="l">AI 出勤分析與問答 <span class="s">★</span><small>AI 月報・自然語言問答・無金鑰 fallback</small></div><div class="v">NT$60,000</div></div>
+      <div class="qrow"><div class="l">自動偵測與多通道提醒 <small>忘打卡・異常預警・遲到統計・站內／Email／LINE</small></div><div class="v">NT$40,000</div></div>
+      <div class="qrow"><div class="l">報表中心與人力儀表板 <small>四大報表・Excel 匯出・在職分析</small></div><div class="v">NT$38,000</div></div>
+      <div class="qgrp">人事・進階</div>
+      <div class="qrow"><div class="l">人事主檔與員工自助 <small>履歷／證照／經歷・組織圖・到職報到・ESS／PWA</small></div><div class="v">NT$55,000</div></div>
+      <div class="qrow"><div class="l">績效考核 KPI <small>加權範本・指派評分・定版</small></div><div class="v">NT$32,000</div></div>
+      <div class="qrow"><div class="l">招募 ATS <small>職缺・人才庫・面試・offer・內部職缺牆</small></div><div class="v">NT$45,000</div></div>
+      <div class="qtotal"><div class="l">單模組加總</div><div class="v">NT$610,000</div></div>
+    </div>
+    <p class="qsub reveal" style="transition-delay:.18s">以上為<b>一次性導入建置費（未稅）</b>。單模組可自由組合；整案採<b>套裝優惠</b>，最高省 NT$130,000（見下頁）。</p>
+  </div>
+</section>
+
+<!-- 11 BUNDLES -->
+<section class="slide" id="s11" data-label="套裝方案">
+  <div class="inner wide">
+    <div class="eyebrow gold reveal">套裝方案</div>
+    <h2 class="reveal" style="transition-delay:.05s">三種組合，<br>對應不同規模。</h2>
+    <div class="tiers reveal" style="transition-delay:.12s">
+      <div class="tier">
+        <div class="nm">標準差勤<small>快速上線的差勤基本盤</small></div>
+        <div class="pr">NT$200,000<small> 起</small></div>
+        <div class="save">&nbsp;</div>
+        <ul>
+          <li>基礎平台（多租戶・白標）</li>
+          <li>智慧差勤打卡</li>
+          <li>排班與班表管理</li>
+          <li>假勤多關簽核</li>
+          <li>人事主檔與員工自助 ESS</li>
+        </ul>
+      </div>
+      <div class="tier feat">
+        <div class="tag">★ 最推薦（方案 A）</div>
+        <div class="nm">完整人資<small>全 12 模組・含薪資稅務與 AI</small></div>
+        <div class="pr">NT$480,000</div>
+        <div class="save">整案省 NT$130,000</div>
+        <ul>
+          <li>標準差勤全部模組</li>
+          <li class="hl">彈性規則引擎</li>
+          <li>自動薪資結算</li>
+          <li class="hl">台灣薪資稅務申報</li>
+          <li class="hl">AI 出勤分析與問答</li>
+          <li>自動偵測・報表・KPI・招募 ATS</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <div class="nm">旗艦<small>完整人資 ＋ 原生 App（方案 B）</small></div>
+        <div class="pr">NT$640,000</div>
+        <div class="save">&nbsp;</div>
+        <ul>
+          <li>完整人資全 12 模組</li>
+          <li>iOS／Android 原生 App</li>
+          <li>人臉打卡</li>
+          <li>推播通知</li>
+          <li>離線打卡佇列</li>
+        </ul>
+      </div>
+    </div>
+    <p class="qsub reveal" style="transition-delay:.2s;text-align:center"><b>年度維運</b>（雲端代管・系統更新・技術支援・法規費率更新）＝建置費 15%／年，<b>首年免費</b>。白標轉售授權另議。</p>
+  </div>
+</section>
+
+<!-- 12 TIMELINE -->
+<section class="slide alt" id="s12" data-label="導入時程">
+  <div class="inner wide">
+    <div class="eyebrow reveal">導入時程</div>
+    <h2 class="reveal" style="transition-delay:.05s">8–10 週上線。</h2>
+    <div class="tl reveal" style="transition-delay:.12s">
+      <div class="step"><span class="when">第 1–2 週</span><span class="what">需求訪談・差勤與薪資制度盤點</span></div>
+      <div class="step"><span class="when">第 3–5 週</span><span class="what">規則引擎設定・員工資料匯入・白標套用</span></div>
+      <div class="step"><span class="when">第 6–7 週</span><span class="what">整合測試・薪資與二代健保平行試算</span></div>
+      <div class="step"><span class="when">第 8 週</span><span class="what">教育訓練（HR ・主管・員工）</span></div>
+      <div class="step mile"><span class="when">里程碑</span><span class="what"><b>平行試算驗收</b><span class="tg">關鍵</span>　與現行薪資對帳一致才上線</span></div>
+      <div class="step mile"><span class="when">上線</span><span class="what"><b>正式切換</b><span class="tg">里程碑</span>　啟用正式環境、全員導入</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 WHY US -->
+<section class="slide" id="s13" data-label="競爭優勢">
+  <div class="inner wide">
+    <div class="eyebrow reveal">為什麼選 LinkUp</div>
+    <h2 class="reveal" style="transition-delay:.05s">不只是打卡，<br>是你完全掌握的系統。</h2>
+    <div class="cmp reveal" style="transition-delay:.12s">
+      <div class="row head"><div class="h">　</div><div class="h us">LinkUp</div><div class="h them">一般月租打卡 SaaS</div></div>
+      <div class="row"><div class="lab">特殊制度規則</div><div class="us">設定檔客製，不遷就框架</div><div class="them">固定框架，難調整</div></div>
+      <div class="row"><div class="lab">台灣法規（二代健保／扣繳）</div><div class="us">內建自動、費率可更新</div><div class="them">多需另接會計軟體或人工</div></div>
+      <div class="row"><div class="lab">薪資計算</div><div class="us">工時到薪資全自動、可稽核</div><div class="them">多半只到打卡匯出</div></div>
+      <div class="row"><div class="lab">AI 自動化</div><div class="us">月報・問答・偵測預警</div><div class="them">少有或需另購</div></div>
+      <div class="row"><div class="lab">資料自主</div><div class="us">在你自己的雲，完整掌握</div><div class="them">綁在平台，難搬遷</div></div>
+      <div class="row"><div class="lab">計價方式</div><div class="us">一次建置・不綁人頭</div><div class="them">每人每月抽租，越用越貴</div></div>
+    </div>
+    <p class="qsub reveal" style="transition-delay:.2s;text-align:center">以 Apollo／MayoHR 六大模組為對標逐項補齊；人越多一次建置越划算，且可<b>白標轉售</b>成為你自己的產品。</p>
+  </div>
+</section>
+
+<!-- 14 CLOSING -->
+<section class="slide tint" id="s14" data-label="立即體驗">
+  <div class="inner">
+    <div class="eyebrow reveal">立即體驗</div>
+    <h1 class="reveal" style="transition-delay:.05s;font-size:clamp(30px,5.2vw,62px)">現在就打開，<br>看它怎麼運作。</h1>
+    <div class="linkrow reveal" style="transition-delay:.14s">
+      <a class="cta" href="https://hr-theta-peach.vercel.app/login" target="_blank" rel="noopener">員工自助實機　›</a>
+      <a class="cta ghost" href="https://hr-theta-peach.vercel.app/admin" target="_blank" rel="noopener">管理後台實機　›</a>
+    </div>
+    <div class="credbox reveal" style="transition-delay:.18s"><span>示範帳號</span><b>hr@demo.com</b><span>密碼</span><code>Demo1234!</code></div>
+    <div class="contact reveal" style="transition-delay:.24s"><span>道騰國際　·　LinkUp AI 智慧差勤薪資雲</span></div>
+    <p class="fine reveal" style="transition-delay:.28s">＊ 本文件所列價格為未稅建議價，實際依需求範圍與客製程度報價。</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var dotsWrap=document.getElementById('dots');
+  var pfill=document.getElementById('pfill');
+  var total=slides.length, active=0;
+
+  slides.forEach(function(s,i){
+    var b=document.createElement('button');
+    b.type='button';
+    b.setAttribute('aria-label','前往：'+(s.dataset.label||('第 '+(i+1)+' 頁')));
+    b.innerHTML='<span class="lbl">'+(s.dataset.label||(i+1))+'</span>';
+    b.addEventListener('click',function(){ slides[i].scrollIntoView({behavior:'smooth'}); });
+    dotsWrap.appendChild(b);
+  });
+  var dots=[].slice.call(dotsWrap.children);
+
+  function setActive(i){
+    if(i===active) return;
+    active=i;
+    dots.forEach(function(d,j){ d.setAttribute('data-active', j===i?'true':'false'); });
+    if(pfill) pfill.style.width=((i+1)/total*100)+'%';
+  }
+  dots[0].setAttribute('data-active','true');
+  if(pfill) pfill.style.width=(1/total*100)+'%';
+
+  if('IntersectionObserver' in window){
+    var actObs=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting && e.intersectionRatio>=0.55){ setActive(slides.indexOf(e.target)); }
+      });
+    },{threshold:[0.55]});
+    slides.forEach(function(s){ actObs.observe(s); });
+
+    var revObs=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting) e.target.classList.add('in');
+        else e.target.classList.remove('in');
+      });
+    },{threshold:0.18});
+    document.querySelectorAll('.reveal').forEach(function(r){ revObs.observe(r); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(r){ r.classList.add('in'); });
+  }
+
+  window.addEventListener('keydown',function(ev){
+    var k=ev.key;
+    if(k==='ArrowDown'||k==='PageDown'||k===' '||k==='Spacebar'){ ev.preventDefault(); if(active<total-1) slides[active+1].scrollIntoView({behavior:'smooth'}); }
+    else if(k==='ArrowUp'||k==='PageUp'){ ev.preventDefault(); if(active>0) slides[active-1].scrollIntoView({behavior:'smooth'}); }
+    else if(k==='Home'){ ev.preventDefault(); slides[0].scrollIntoView({behavior:'smooth'}); }
+    else if(k==='End'){ ev.preventDefault(); slides[total-1].scrollIntoView({behavior:'smooth'}); }
+  });
+})();
+</script>
+</body>
+</html>
