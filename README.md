@@ -25,4 +25,4 @@ LinkUp（AI 智慧差勤薪資雲）的銷售提案站 — 單檔靜態捲動式
 
 ## 部署
 
-推上 `main` 後由 Vercel 自動部署（專案 `hr-saleskit`，team `dt-office`）。
+推上 `main` 後由 Vercel 自動部署 — 專案 `hr-saleskit`（team `dt-office`），無建置流程，直接服務 repo 根目錄的靜態檔。
